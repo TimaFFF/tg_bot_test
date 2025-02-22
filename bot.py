@@ -3,6 +3,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from aiohttp import web
 import json
 import asyncio
+from threading import Thread
 
 # Загрузка заметок из файла
 def load_notes() -> dict:
@@ -74,6 +75,12 @@ async def start_http_server():
     await site.start()
     print("HTTP-сервер запущен на порту 8080")  # Вывод в консоль
 
+# Запуск HTTP-сервера в отдельном потоке
+def run_http_server():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(start_http_server())
+
 # Запуск Telegram-бота
 async def start_bot():
     token = "7891525747:AAEZFGKnfuXgDSrR1_IVJHvrIPQ3MrdSMUY"
@@ -85,11 +92,12 @@ async def start_bot():
 # Основная функция
 async def main():
     print("Запуск бота...")  # Вывод в консоль
-    # Запуск HTTP-сервера и бота одновременно
-    await asyncio.gather(
-        start_http_server(),
-        start_bot()
-    )
+    # Запуск HTTP-сервера в отдельном потоке
+    http_thread = Thread(target=run_http_server)
+    http_thread.start()
+
+    # Запуск Telegram-бота
+    await start_bot()
 
 # Используем существующий событийный цикл
 if __name__ == '__main__':
