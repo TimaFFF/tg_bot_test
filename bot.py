@@ -48,7 +48,7 @@ async def show_notes(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 # Основная функция
 def main() -> None:
     # Укажите ваш токен
-    token = "YOUR_TELEGRAM_BOT_TOKEN"
+    token = "7891525747:AAEZFGKnfuXgDSrR1_IVJHvrIPQ3MrdSMUY"
 
     # Создаем приложение
     application = Application.builder().token(token).build()
