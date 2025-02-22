@@ -24,4 +24,5 @@ def main() -> None:
     updater.idle()
 
 if __name__ == '__main__':
+    print("Запуск бота")
     main()
