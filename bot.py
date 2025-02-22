@@ -74,18 +74,22 @@ async def start_http_server():
     await site.start()
     print("HTTP-сервер запущен на порту 8080")  # Вывод в консоль
 
-# Основная функция
-async def main():
-    print("Запуск бота...")  # Вывод в консоль
-    # Запуск HTTP-сервера
-    await start_http_server()
-
-    # Запуск Telegram-бота
-    token = "YOUR_TELEGRAM_BOT_TOKEN"
+# Запуск Telegram-бота
+async def start_bot():
+    token = "7891525747:AAEZFGKnfuXgDSrR1_IVJHvrIPQ3MrdSMUY"
     application = Application.builder().token(token).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     await application.run_polling()
+
+# Основная функция
+async def main():
+    print("Запуск бота...")  # Вывод в консоль
+    # Запуск HTTP-сервера и бота одновременно
+    await asyncio.gather(
+        start_http_server(),
+        start_bot()
+    )
 
 # Используем существующий событийный цикл
 if __name__ == '__main__':
